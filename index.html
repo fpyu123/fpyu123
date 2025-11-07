@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>幸运抽奖活动</title>
+  <title>幸运大抽奖</title>
   <!-- 引入Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- 引入Font Awesome -->
@@ -15,10 +15,10 @@
       theme: {
         extend: {
           colors: {
-            primary: '#D81F26', // 主红色
-            secondary: '#FFD700', // 金色
-            accent: '#FFA500', // 橙色
-            darkRed: '#A8071A',
+            primary: '#D81F26',
+            secondary: '#FFC107',
+            gold: '#FFD700',
+            darkRed: '#B71C1C',
           },
           fontFamily: {
             sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -33,11 +33,12 @@
       .content-auto {
         content-visibility: auto;
       }
-      .text-shadow {
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      .rotate-custom {
+        transform: rotate(var(--rotation, 0deg));
+        transition: transform 5s cubic-bezier(0.17, 0.67, 0.14, 0.99);
       }
-      .rotate-animation {
-        animation: rotate 5s cubic-bezier(0.17, 0.67, 0.12, 0.98) forwards;
+      .gold-gradient {
+        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
       }
       .coin-animation {
         animation: float 4s ease-in-out infinite;
@@ -59,392 +60,340 @@
         width: 10px;
         height: 10px;
         border-radius: 50%;
+        background-color: rgba(255, 215, 0, 0.8);
         opacity: 0;
       }
     }
     
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(calc(360deg * 8 + var(--random-rotation, 0deg))); }
-    }
-    
     @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(10deg); }
-      100% { transform: translateY(0) rotate(0deg); }
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(10deg);
+      }
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
     }
     
     @keyframes firework {
-      0% { transform: scale(0); opacity: 1; }
-      100% { transform: scale(2); opacity: 0; }
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(5);
+        opacity: 0;
+      }
+    }
+    
+    .prize-item {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .prize-item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
     }
   </style>
 </head>
+<body class="bg-primary min-h-screen overflow-x-hidden relative">
+  <!-- 背景装饰金币 -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <!-- 随机金币装饰 -->
+    <div class="coin absolute top-[10%] left-[5%] w-12 h-12 rounded-full gold-gradient coin-animation"></div>
+    <div class="coin absolute top-[20%] right-[10%] w-10 h-10 rounded-full gold-gradient coin-animation coin-animation-delay-1"></div>
+    <div class="coin absolute top-[30%] left-[15%] w-8 h-8 rounded-full gold-gradient coin-animation coin-animation-delay-2"></div>
+    <div class="coin absolute top-[40%] right-[5%] w-14 h-14 rounded-full gold-gradient coin-animation coin-animation-delay-3"></div>
+    <div class="coin absolute top-[60%] left-[10%] w-10 h-10 rounded-full gold-gradient coin-animation coin-animation-delay-4"></div>
+    <div class="coin absolute top-[70%] right-[15%] w-12 h-12 rounded-full gold-gradient coin-animation"></div>
+    <div class="coin absolute bottom-[10%] left-[5%] w-8 h-8 rounded-full gold-gradient coin-animation coin-animation-delay-1"></div>
+    <div class="coin absolute bottom-[20%] right-[10%] w-10 h-10 rounded-full gold-gradient coin-animation coin-animation-delay-2"></div>
+    <div class="coin absolute top-[5%] right-[20%] w-10 h-10 rounded-full gold-gradient coin-animation coin-animation-delay-3"></div>
+    <div class="coin absolute bottom-[30%] left-[20%] w-12 h-12 rounded-full gold-gradient coin-animation coin-animation-delay-4"></div>
+    
+    <!-- 底部金币堆 -->
+    <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-gold/30 to-transparent"></div>
+    <div class="absolute bottom-0 left-0 w-32 h-32 rounded-full gold-gradient opacity-50"></div>
+    <div class="absolute bottom-0 right-0 w-40 h-40 rounded-full gold-gradient opacity-50"></div>
+    <div class="absolute bottom-0 left-1/4 w-24 h-24 rounded-full gold-gradient opacity-40"></div>
+    <div class="absolute bottom-0 right-1/3 w-32 h-32 rounded-full gold-gradient opacity-40"></div>
+  </div>
 
-<body class="bg-primary min-h-screen overflow-x-hidden font-sans relative">
-  <!-- 背景图案 -->
-  <div class="absolute inset-0 opacity-10 z-0">
-    <div class="w-full h-full bg-[url('https://picsum.photos/id/104/1200/1200')] bg-repeat"></div>
-  </div>
-  
-  <!-- 金币装饰 - 增加更多金币效果 -->
-  <div class="coin absolute top-[10%] right-[5%] text-secondary text-4xl coin-animation z-10">
-    <i class="fa fa-coins"></i>
-  </div>
-  <div class="coin absolute top-[20%] left-[8%] text-secondary text-3xl coin-animation coin-animation-delay-1 z-10">
-    <i class="fa fa-coins"></i>
-  </div>
-  <div class="coin absolute top-[70%] right-[10%] text-secondary text-5xl coin-animation coin-animation-delay-2 z-10">
-    <i class="fa fa-coins"></i>
-  </div>
-  <div class="coin absolute bottom-[15%] left-[5%] text-secondary text-3xl coin-animation coin-animation-delay-3 z-10">
-    <i class="fa fa-coins"></i>
-  </div>
-  <div class="coin absolute top-[40%] right-[15%] text-secondary text-4xl coin-animation coin-animation-delay-4 z-10">
-    <i class="fa fa-coins"></i>
-  </div>
-  <div class="coin absolute bottom-[30%] right-[20%] text-secondary text-2xl coin-animation z-10">
-    <i class="fa fa-coins"></i>
-  </div>
-  <div class="coin absolute top-[60%] left-[15%] text-secondary text-3xl coin-animation coin-animation-delay-1 z-10">
-    <i class="fa fa-coins"></i>
-  </div>
-  
-  <!-- 金币堆装饰 -->
-  <div class="absolute bottom-0 left-0 w-1/3 text-secondary text-6xl z-10">
-    <i class="fa fa-coins"></i>
-  </div>
-  <div class="absolute bottom-0 right-0 w-1/3 text-secondary text-6xl text-right z-10">
-    <i class="fa fa-coins"></i>
-  </div>
-  
-  <!-- 烟花效果 -->
-  <div id="fireworks-container" class="absolute inset-0 pointer-events-none z-20"></div>
-  
-  <div class="container mx-auto px-4 py-8 relative z-30">
+  <div class="container mx-auto px-4 py-8 relative z-10">
     <!-- 标题区域 -->
-    <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center bg-white rounded-full p-2 mb-4">
-        <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/d1d0bb8f18d847808991304b39bdc32e.png~tplv-a9rns2rl98-24:720:720.png?rcl=202511062010373A454258EAB8302CC793&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763035837&x-signature=7fIRby2ht6lfaBfv3ww3vx%2Blcxk%3D" 
-             alt="基金会标志" 
-             class="w-16 h-16 rounded-full">
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center mb-2">
+        <img src="https://picsum.photos/60/60" alt="Logo" class="w-12 h-12 rounded-full bg-white p-1">
       </div>
-      <h1 class="text-[clamp(1.8rem,5vw,2.8rem)] font-bold text-white text-shadow">环球慈善基金会</h1>
-      <p class="text-secondary text-lg mt-2">幸运大抽奖活动</p>
+      <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-2">环球慈善基金会</h1>
+      <p class="text-secondary/90 text-lg">幸运大抽奖活动</p>
     </div>
     
     <!-- 参与人数 -->
-    <div class="text-center mb-6">
-      <div class="inline-block bg-secondary/20 text-white px-6 py-2 rounded-full backdrop-blur-sm">
-        <p>已有 <span class="font-bold text-secondary">2227</span> 人参与</p>
-      </div>
+    <div class="text-center mb-4">
+      <p class="inline-block bg-white/20 text-white px-6 py-2 rounded-full backdrop-blur-sm">
+        已有 2227 人参与
+      </p>
     </div>
     
-    <!-- 抽奖转盘 -->
-    <div class="max-w-md mx-auto mb-10 relative">
-      <div class="w-full aspect-square rounded-full bg-white p-3 relative shadow-xl">
+    <!-- 抽奖转盘区域 -->
+    <div class="flex justify-center my-8">
+      <div class="relative w-[min(90vw,400px)] h-[min(90vw,400px)]">
         <!-- 转盘背景 -->
-        <div class="w-full h-full rounded-full bg-amber-50 relative overflow-hidden">
-          <!-- 转盘分割线 -->
-          <div class="absolute inset-0">
-            <div class="absolute top-0 left-1/2 w-0.5 h-full bg-amber-200 transform -translate-x-1/2"></div>
-            <div class="absolute top-1/2 left-0 w-full h-0.5 bg-amber-200 transform -translate-y-1/2"></div>
-            <div class="absolute top-0 left-0 w-full h-full transform rotate-45">
-              <div class="absolute top-0 left-1/2 w-0.5 h-full bg-amber-200 transform -translate-x-1/2"></div>
-            </div>
-            <div class="absolute top-0 left-0 w-full h-full transform -rotate-45">
-              <div class="absolute top-0 left-1/2 w-0.5 h-full bg-amber-200 transform -translate-x-1/2"></div>
-            </div>
-          </div>
-          
-          <!-- 奖品位置（图片保持不动，后续可自行替换） -->
-          <div class="prize absolute top-4 left-1/2 transform -translate-x-1/2 flex justify-center items-center">
-            <div class="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center p-1">
-              <img src="https://picsum.photos/id/1/60/60" alt="奖品1" class="w-full h-full object-cover rounded-full">
-            </div>
-          </div>
-          <div class="prize absolute top-1/2 right-4 transform -translate-y-1/2 flex justify-center items-center">
-            <div class="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center p-1">
-              <img src="https://picsum.photos/id/2/60/60" alt="奖品2" class="w-full h-full object-cover rounded-full">
-            </div>
-          </div>
-          <div class="prize absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center items-center">
-            <div class="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center p-1">
-              <img src="https://picsum.photos/id/3/60/60" alt="奖品3" class="w-full h-full object-cover rounded-full">
-            </div>
-          </div>
-          <div class="prize absolute top-1/2 left-4 transform -translate-y-1/2 flex justify-center items-center">
-            <div class="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center p-1">
-              <img src="https://picsum.photos/id/4/60/60" alt="奖品4" class="w-full h-full object-cover rounded-full">
-            </div>
-          </div>
-          <div class="prize absolute top-[25%] right-[25%] flex justify-center items-center">
-            <div class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center p-1">
-              <img src="https://picsum.photos/id/5/50/50" alt="奖品5" class="w-full h-full object-cover rounded-full">
-            </div>
-          </div>
-          <div class="prize absolute bottom-[25%] right-[25%] flex justify-center items-center">
-            <div class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center p-1">
-              <img src="https://picsum.photos/id/6/50/50" alt="奖品6" class="w-full h-full object-cover rounded-full">
-            </div>
-          </div>
-          <div class="prize absolute bottom-[25%] left-[25%] flex justify-center items-center">
-            <div class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center p-1">
-              <img src="https://picsum.photos/id/7/50/50" alt="奖品7" class="w-full h-full object-cover rounded-full">
-            </div>
-          </div>
-          <div class="prize absolute top-[25%] left-[25%] flex justify-center items-center">
-            <div class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center p-1">
-              <img src="https://picsum.photos/id/8/50/50" alt="奖品8" class="w-full h-full object-cover rounded-full">
-            </div>
-          </div>
-          
-          <!-- 转盘旋转容器 -->
-          <div id="wheel" class="absolute inset-0">
-            <!-- 旋转的是这个容器，奖品图片保持不动 -->
+        <div class="absolute inset-0 rounded-full bg-white/90 shadow-xl"></div>
+        
+        <!-- 转盘刻度 -->
+        <div class="absolute inset-0 rounded-full overflow-hidden">
+          <div class="absolute inset-[5%] rounded-full border-8 border-secondary/30"></div>
+          <!-- 刻度线 -->
+          <div id="scaleMarks" class="absolute inset-0 rounded-full">
+            <!-- 刻度将通过JS生成 -->
           </div>
         </div>
         
-        <!-- 中心按钮 -->
-        <button id="start-btn" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-primary hover:bg-darkRed text-white rounded-full shadow-lg flex items-center justify-center text-lg font-bold transition-all duration-300 z-10">
+        <!-- 转盘内容 - 可旋转部分 -->
+        <div id="wheel" class="absolute inset-[10%] rounded-full rotate-custom">
+          <!-- 奖品位置将通过JS计算 -->
+          <div class="prize-item" style="top: 0; left: 50%; transform: translate(-50%, -50%);">
+            <img src="https://picsum.photos/60/60?random=1" alt="奖品1">
+          </div>
+          <div class="prize-item" style="top: 25%; right: 10%; transform: translateY(-50%);">
+            <img src="https://picsum.photos/60/60?random=2" alt="奖品2">
+          </div>
+          <div class="prize-item" style="top: 75%; right: 10%; transform: translateY(-50%);">
+            <img src="https://picsum.photos/60/60?random=3" alt="奖品3">
+          </div>
+          <div class="prize-item" style="bottom: 0; left: 50%; transform: translate(-50%, 50%);">
+            <img src="https://picsum.photos/60/60?random=4" alt="奖品4">
+          </div>
+          <div class="prize-item" style="top: 75%; left: 10%; transform: translateY(-50%);">
+            <img src="https://picsum.photos/60/60?random=5" alt="奖品5">
+          </div>
+          <div class="prize-item" style="top: 25%; left: 10%; transform: translateY(-50%);">
+            <img src="https://picsum.photos/60/60?random=6" alt="奖品6">
+          </div>
+        </div>
+        
+        <!-- 中心开始按钮 -->
+        <button id="startBtn" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-primary text-white text-lg font-bold shadow-lg flex items-center justify-center z-10 hover:bg-darkRed transition-colors active:scale-95">
           开始
         </button>
         
-        <!-- 指针 -->
-        <div class="absolute top-[-10px] left-1/2 transform -translate-x-1/2 z-20">
-          <div class="w-6 h-10 bg-secondary clip-triangle-down shadow-md"></div>
-        </div>
+        <!-- 转盘指针 -->
+        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-16 bg-secondary z-10 clip-path polygon(50% 0%, 0% 100%, 100% 100%)"></div>
       </div>
     </div>
     
     <!-- 奖品展示区 -->
-    <div class="bg-white/90 backdrop-blur-sm rounded-xl p-6 max-w-3xl mx-auto shadow-lg">
+    <div class="bg-white/90 rounded-xl p-6 max-w-2xl mx-auto mb-8">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold text-primary">活动奖品</h2>
-        <button id="rules-btn" class="text-accent hover:text-primary transition-colors">
-          <i class="fa fa-book mr-1"></i> 活动规则
+        <button id="rulesBtn" class="text-secondary hover:text-gold transition-colors">
+          活动规则 <i class="fa fa-info-circle ml-1"></i>
         </button>
       </div>
       
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <!-- 奖品图片（保持不动，后续可自行修改） -->
-        <div class="prize-item flex flex-col items-center p-3 border border-amber-100 rounded-lg hover:shadow-md transition-shadow">
-          <img src="https://picsum.photos/id/10/100/100" alt="奖品" class="w-20 h-20 object-cover rounded-md mb-2">
-          <p class="text-center text-sm">高级耳机</p>
+        <div class="bg-white rounded-lg p-3 shadow text-center">
+          <img src="https://picsum.photos/100/100?random=10" alt="奖品图片" class="w-full h-24 object-contain mx-auto mb-2">
+          <p class="text-sm">奖品1</p>
         </div>
-        <div class="prize-item flex flex-col items-center p-3 border border-amber-100 rounded-lg hover:shadow-md transition-shadow">
-          <img src="https://picsum.photos/id/11/100/100" alt="奖品" class="w-20 h-20 object-cover rounded-md mb-2">
-          <p class="text-center text-sm">智能手表</p>
+        <div class="bg-white rounded-lg p-3 shadow text-center">
+          <img src="https://picsum.photos/100/100?random=11" alt="奖品图片" class="w-full h-24 object-contain mx-auto mb-2">
+          <p class="text-sm">奖品2</p>
         </div>
-        <div class="prize-item flex flex-col items-center p-3 border border-amber-100 rounded-lg hover:shadow-md transition-shadow">
-          <img src="https://picsum.photos/id/12/100/100" alt="奖品" class="w-20 h-20 object-cover rounded-md mb-2">
-          <p class="text-center text-sm">橄榄油礼盒</p>
+        <div class="bg-white rounded-lg p-3 shadow text-center">
+          <img src="https://picsum.photos/100/100?random=12" alt="奖品图片" class="w-full h-24 object-contain mx-auto mb-2">
+          <p class="text-sm">奖品3</p>
         </div>
-        <div class="prize-item flex flex-col items-center p-3 border border-amber-100 rounded-lg hover:shadow-md transition-shadow">
-          <img src="https://picsum.photos/id/13/100/100" alt="奖品" class="w-20 h-20 object-cover rounded-md mb-2">
-          <p class="text-center text-sm">咖啡机</p>
+        <div class="bg-white rounded-lg p-3 shadow text-center">
+          <img src="https://picsum.photos/100/100?random=13" alt="奖品图片" class="w-full h-24 object-contain mx-auto mb-2">
+          <p class="text-sm">奖品4</p>
         </div>
-        <div class="prize-item flex flex-col items-center p-3 border border-amber-100 rounded-lg hover:shadow-md transition-shadow">
-          <img src="https://picsum.photos/id/14/100/100" alt="奖品" class="w-20 h-20 object-cover rounded-md mb-2">
-          <p class="text-center text-sm">红酒礼盒</p>
+        <div class="bg-white rounded-lg p-3 shadow text-center">
+          <img src="https://picsum.photos/100/100?random=14" alt="奖品图片" class="w-full h-24 object-contain mx-auto mb-2">
+          <p class="text-sm">奖品5</p>
         </div>
-        <div class="prize-item flex flex-col items-center p-3 border border-amber-100 rounded-lg hover:shadow-md transition-shadow">
-          <img src="https://picsum.photos/id/15/100/100" alt="奖品" class="w-20 h-20 object-cover rounded-md mb-2">
-          <p class="text-center text-sm">零食大礼包</p>
+        <div class="bg-white rounded-lg p-3 shadow text-center">
+          <img src="https://picsum.photos/100/100?random=15" alt="奖品图片" class="w-full h-24 object-contain mx-auto mb-2">
+          <p class="text-sm">奖品6</p>
         </div>
       </div>
     </div>
   </div>
   
-  <!-- 中奖结果弹窗 -->
-  <div id="result-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-2xl max-w-md w-full mx-4 overflow-hidden shadow-2xl transform transition-all">
-      <div class="bg-primary text-white p-6 text-center relative">
-        <h3 class="text-xl font-bold">恭喜您中奖了！</h3>
-        <button id="close-modal" class="absolute top-4 right-4 text-white hover:text-secondary">
-          <i class="fa fa-times text-xl"></i>
-        </button>
-      </div>
-      <div class="p-6 text-center">
-        <div class="w-32 h-32 mx-auto bg-amber-50 rounded-full flex items-center justify-center mb-4">
-          <img id="prize-image" src="https://picsum.photos/id/20/150/150" alt="中奖奖品" class="w-28 h-28 object-cover rounded-full">
+  <!-- 抽奖结果弹窗 -->
+  <div id="resultModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 transform transition-all">
+      <div class="text-center">
+        <h3 class="text-2xl font-bold text-primary mb-4">恭喜您!</h3>
+        <p class="text-lg mb-4">您抽到了:</p>
+        <div class="w-40 h-40 mx-auto bg-gray-100 rounded-lg flex items-center justify-center mb-6">
+          <img id="prizeImage" src="https://picsum.photos/120/120?random=20" alt="中奖奖品" class="max-w-full max-h-full object-contain">
         </div>
-        <h4 id="prize-name" class="text-xl font-bold text-gray-800 mb-2">高级无线耳机</h4>
-        <p class="text-gray-600 mb-6">请联系客服领取您的奖品</p>
-        <a href="https://example.com/service" target="_blank" class="inline-block bg-primary hover:bg-darkRed text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105">
+        <p id="prizeName" class="text-xl font-semibold mb-6">精美耳机一副</p>
+        <a href="https://example.com/service" target="_blank" class="inline-block bg-primary hover:bg-darkRed text-white font-bold py-3 px-8 rounded-full transition-colors">
           联系客服领取奖品
         </a>
       </div>
     </div>
   </div>
   
-  <!-- 活动规则弹窗 -->
-  <div id="rules-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-2xl max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl">
-      <div class="bg-primary text-white p-6 relative">
-        <h3 class="text-xl font-bold">活动规则</h3>
-        <button id="close-rules" class="absolute top-4 right-4 text-white hover:text-secondary">
-          <i class="fa fa-times text-xl"></i>
-        </button>
+  <!-- 规则弹窗 -->
+  <div id="rulesModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto">
+      <div class="text-center mb-4">
+        <h3 class="text-2xl font-bold text-primary">活动规则</h3>
       </div>
-      <div class="p-6">
-        <ul class="space-y-3 text-gray-700">
-          <li class="flex items-start">
-            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
-            <span>每位用户限参与一次抽奖活动</span>
-          </li>
-          <li class="flex items-start">
-            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
-            <span>抽奖结果即时显示，中奖后请在7天内联系客服领取</span>
-          </li>
-          <li class="flex items-start">
-            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
-            <span>奖品将在确认领取后的15个工作日内发放</span>
-          </li>
-          <li class="flex items-start">
-            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
-            <span>如有疑问，请联系客服咨询</span>
-          </li>
-          <li class="flex items-start">
-            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
-            <span>本活动最终解释权归主办方所有</span>
-          </li>
-        </ul>
+      <div class="space-y-3 text-gray-700">
+        <p>1. 每个用户限参与一次抽奖活动</p>
+        <p>2. 抽奖结果即时公布，中奖用户需在7天内联系客服领取奖品</p>
+        <p>3. 奖品将在确认领取后的15个工作日内发放</p>
+        <p>4. 如有任何疑问，请联系客服咨询</p>
+        <p>5. 本活动最终解释权归主办方所有</p>
+      </div>
+      <div class="mt-6 text-center">
+        <button id="closeRulesBtn" class="bg-primary hover:bg-darkRed text-white font-bold py-2 px-6 rounded-full transition-colors">
+          关闭
+        </button>
       </div>
     </div>
   </div>
 
   <script>
-    // 奖品数据
-    const prizes = [
-      { name: "高级无线耳机", image: "https://picsum.photos/id/20/150/150" },
-      { name: "智能手表", image: "https://picsum.photos/id/21/150/150" },
-      { name: "橄榄油礼盒", image: "https://picsum.photos/id/22/150/150" },
-      { name: "咖啡机", image: "https://picsum.photos/id/23/150/150" },
-      { name: "红酒礼盒", image: "https://picsum.photos/id/24/150/150" },
-      { name: "零食大礼包", image: "https://picsum.photos/id/25/150/150" },
-      { name: "100元代金券", image: "https://picsum.photos/id/26/150/150" },
-      { name: "谢谢参与", image: "https://picsum.photos/id/27/150/150" }
-    ];
-    
-    // DOM元素
-    const startBtn = document.getElementById('start-btn');
-    const wheel = document.getElementById('wheel');
-    const resultModal = document.getElementById('result-modal');
-    const closeModal = document.getElementById('close-modal');
-    const prizeImage = document.getElementById('prize-image');
-    const prizeName = document.getElementById('prize-name');
-    const rulesBtn = document.getElementById('rules-btn');
-    const rulesModal = document.getElementById('rules-modal');
-    const closeRules = document.getElementById('close-rules');
-    const fireworksContainer = document.getElementById('fireworks-container');
-    
-    // 状态变量
-    let isSpinning = false;
-    
-    // 生成随机角度（每个奖品间隔45度）
-    function getRandomRotation() {
-      const index = Math.floor(Math.random() * prizes.length);
-      return index * 45 + 22.5; // 指向每个奖品的中心
+    // 生成转盘刻度
+    function createScaleMarks() {
+      const scaleMarks = document.getElementById('scaleMarks');
+      const count = 12; // 刻度数量
+      
+      for (let i = 0; i < count; i++) {
+        const mark = document.createElement('div');
+        const angle = (i * 360) / count;
+        
+        mark.className = 'absolute w-1 h-3 bg-secondary top-0 left-1/2 transform -translate-x-1/2';
+        mark.style.transformOrigin = '50% 50%';
+        mark.style.rotate = `${angle}deg`;
+        
+        scaleMarks.appendChild(mark);
+      }
     }
     
-    // 创建烟花效果
+    // 创建随机烟花效果
     function createFireworks() {
-      // 清除现有烟花
-      fireworksContainer.innerHTML = '';
+      const container = document.querySelector('.container');
+      const fireworksCount = 5;
       
-      // 创建10个烟花
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < fireworksCount; i++) {
         const firework = document.createElement('div');
-        firework.classList.add('firework');
+        firework.className = 'firework';
         
         // 随机位置
-        const left = Math.random() * 100;
-        const top = Math.random() * 80;
+        const x = Math.random() * 100;
+        const y = Math.random() * 80;
         
-        // 随机颜色
-        const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'];
-        const color = colors[Math.floor(Math.random() * colors.length)];
+        firework.style.left = `${x}%`;
+        firework.style.top = `${y}%`;
         
-        firework.style.left = `${left}%`;
-        firework.style.top = `${top}%`;
-        firework.style.backgroundColor = color;
-        firework.style.animation = `firework 1s ease-out forwards ${i * 0.2}s`;
+        container.appendChild(firework);
         
-        fireworksContainer.appendChild(firework);
+        // 触发动画
+        setTimeout(() => {
+          firework.style.animation = 'firework 1s forwards';
+          
+          // 动画结束后移除元素
+          setTimeout(() => {
+            firework.remove();
+          }, 1000);
+        }, i * 500);
       }
     }
     
-    // 开始抽奖
-    startBtn.addEventListener('click', () => {
-      if (isSpinning) return;
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      createScaleMarks();
       
-      isSpinning = true;
-      startBtn.disabled = true;
-      startBtn.textContent = "抽奖中...";
+      const wheel = document.getElementById('wheel');
+      const startBtn = document.getElementById('startBtn');
+      const resultModal = document.getElementById('resultModal');
+      const rulesBtn = document.getElementById('rulesBtn');
+      const rulesModal = document.getElementById('rulesModal');
+      const closeRulesBtn = document.getElementById('closeRulesBtn');
       
-      // 随机旋转角度
-      const rotation = getRandomRotation();
-      wheel.style.setProperty('--random-rotation', `${rotation}deg`);
+      let isSpinning = false;
+      const prizes = [
+        { name: '精美耳机一副', image: 'https://picsum.photos/120/120?random=20' },
+        { name: '豪华咖啡机', image: 'https://picsum.photos/120/120?random=21' },
+        { name: '橄榄油礼盒', image: 'https://picsum.photos/120/120?random=22' },
+        { name: '便携式音箱', image: 'https://picsum.photos/120/120?random=23' },
+        { name: '零食大礼包', image: 'https://picsum.photos/120/120?random=24' },
+        { name: '精品茶叶', image: 'https://picsum.photos/120/120?random=25' }
+      ];
       
-      // 添加旋转动画
-      wheel.classList.add('rotate-animation');
+      // 开始抽奖
+      startBtn.addEventListener('click', () => {
+        if (isSpinning) return;
+        
+        isSpinning = true;
+        startBtn.disabled = true;
+        startBtn.textContent = '抽奖中...';
+        
+        // 计算随机旋转角度 (3-5圈 + 随机位置)
+        const baseRotation = 360 * (3 + Math.random() * 2);
+        const prizeIndex = Math.floor(Math.random() * prizes.length);
+        const prizeRotation = (prizeIndex * 360) / prizes.length;
+        const totalRotation = baseRotation + prizeRotation;
+        
+        // 应用旋转
+        wheel.style.setProperty('--rotation', totalRotation + 'deg');
+        
+        // 5秒后显示结果 (与CSS动画时间一致)
+        setTimeout(() => {
+          // 显示烟花效果
+          createFireworks();
+          
+          // 更新弹窗内容
+          document.getElementById('prizeName').textContent = prizes[prizeIndex].name;
+          document.getElementById('prizeImage').src = prizes[prizeIndex].image;
+          
+          // 显示结果弹窗
+          resultModal.classList.remove('hidden');
+          
+          // 重置按钮状态
+          startBtn.disabled = false;
+          startBtn.textContent = '开始';
+          isSpinning = false;
+        }, 5000);
+      });
       
-      // 5秒后显示结果（与旋转动画时间一致）
-      setTimeout(() => {
-        // 计算中奖索引
-        const index = Math.floor(rotation / 45) % prizes.length;
-        const winningPrize = prizes[index];
-        
-        // 更新弹窗内容
-        prizeImage.src = winningPrize.image;
-        prizeName.textContent = winningPrize.name;
-        
-        // 显示烟花效果
-        createFireworks();
-        
-        // 显示结果弹窗
-        resultModal.classList.remove('hidden');
-        
-        // 重置状态
-        isSpinning = false;
-        startBtn.disabled = false;
-        startBtn.textContent = "开始";
-        wheel.classList.remove('rotate-animation');
-      }, 5000);
-    });
-    
-    // 关闭结果弹窗
-    closeModal.addEventListener('click', () => {
-      resultModal.classList.add('hidden');
-    });
-    
-    // 打开规则弹窗
-    rulesBtn.addEventListener('click', () => {
-      rulesModal.classList.remove('hidden');
-    });
-    
-    // 关闭规则弹窗
-    closeRules.addEventListener('click', () => {
-      rulesModal.classList.add('hidden');
-    });
-    
-    // 点击弹窗外部关闭弹窗
-    window.addEventListener('click', (e) => {
-      if (e.target === resultModal) {
-        resultModal.classList.add('hidden');
-      }
-      if (e.target === rulesModal) {
+      // 关闭结果弹窗
+      resultModal.addEventListener('click', (e) => {
+        if (e.target === resultModal) {
+          resultModal.classList.add('hidden');
+        }
+      });
+      
+      // 规则弹窗控制
+      rulesBtn.addEventListener('click', () => {
+        rulesModal.classList.remove('hidden');
+      });
+      
+      closeRulesBtn.addEventListener('click', () => {
         rulesModal.classList.add('hidden');
-      }
-    });
-    
-    // 添加键盘ESC关闭弹窗功能
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        resultModal.classList.add('hidden');
-        rulesModal.classList.add('hidden');
-      }
+      });
+      
+      rulesModal.addEventListener('click', (e) => {
+        if (e.target === rulesModal) {
+          rulesModal.classList.add('hidden');
+        }
+      });
     });
   </script>
 </body>
