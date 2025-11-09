@@ -230,6 +230,16 @@
             margin: 20px 0;
         }
 
+        .prize-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: block;
+            margin: 10px auto 15px;
+        }
+
         .modal-button {
             padding: 12px 25px;
             border: none;
@@ -247,6 +257,13 @@
             color: #333;
         }
 
+        .contact-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #c0392b;
+            text-decoration: none;
+            display: inline-block;
+        }
+
     </style>
 </head>
 <body>
@@ -261,9 +278,7 @@
             <div class="pointer" id="spin-button">抽奖</div>
         </div>
 
-        <div class="action-buttons">
-            <button class="action-button" id="share-button">分享给好友</button>
-        </div>
+        <!-- 分享功能已移除 -->
 
         <div class="prize-gallery">
             <h3>奖品一览</h3>
@@ -274,7 +289,9 @@
     <div id="prizeModal" class="modal">
         <div class="modal-content">
             <h2>🎉 恭喜您中奖了！</h2>
+            <img id="prizeImage" class="prize-image" src="" alt="奖品图片">
             <div class="prize-name" id="prizeName"></div>
+            <a class="modal-button contact-btn" id="contact-btn" href="#" target="_blank">联系客服领取</a>
             <button class="modal-button close-btn" onclick="closeModal()">关闭</button>
         </div>
     </div>
@@ -298,7 +315,6 @@
         const wheel = document.getElementById('wheel');
         const prizeGrid = document.getElementById('prize-grid');
         const spinButton = document.getElementById('spin-button');
-        const shareButton = document.getElementById('share-button');
         const wheelContainer = document.getElementById('wheel-container');
 
         function createWheel() {
@@ -355,7 +371,11 @@
         function showPrize(prize) {
             const modal = document.getElementById('prizeModal');
             const prizeName = document.getElementById('prizeName');
+            const prizeImage = document.getElementById('prizeImage');
+            const contactBtn = document.getElementById('contact-btn');
             prizeName.textContent = `恭喜您获得：${prize.name}`;
+            prizeImage.src = prize.image;
+            contactBtn.href = customerServiceUrl;
             modal.style.display = 'block';
         }
 
@@ -363,18 +383,13 @@
             document.getElementById('prizeModal').style.display = 'none';
         }
 
-        function share() {
-            chances++;
-            alert('分享成功！您已获得一次额外抽奖机会！');
-            spinButton.textContent = `抽奖`;
-            spinButton.disabled = false;
-        }
-
         spinButton.addEventListener('click', startSpin);
-        shareButton.addEventListener('click', share);
 
         createWheel();
         createPrizeGallery();
+
+        // 客服链接（修改此处即可更换联系方式）
+        const customerServiceUrl = 'https://example.com/contact';
     </script>
 </body>
 </html>
