@@ -281,6 +281,36 @@
             display: inline-block;
         }
 
+        /* 中心箭头（指向上方中奖分区） */
+        .pointer::after {
+            content: '';
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 16px solid rgba(255,255,255,0.95);
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
+        }
+
+        /* 分区内容：图片 + 文案，保持正向显示 */
+        .section-content {
+            transform: rotate(-22.5deg);
+            margin-left: 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 6px;
+        }
+
+        .section-img {
+            width: 34px; height: 34px;
+            object-fit: contain;
+        }
+
     </style>
 </head>
 <body>
@@ -315,14 +345,14 @@
 
     <script>
         const prizes = [
-            { name: '一等奖', color: '#FF6B6B', image: 'https://via.placeholder.com/80/FF6B6B/FFFFFF?text=1st' },
-            { name: '二等奖', color: '#4ECDC4', image: 'https://via.placeholder.com/80/4ECDC4/FFFFFF?text=2nd' },
-            { name: '三等奖', color: '#45B7D1', image: 'https://via.placeholder.com/80/45B7D1/FFFFFF?text=3rd' },
-            { name: '四等奖', color: '#96CEB4', image: 'https://via.placeholder.com/80/96CEB4/FFFFFF?text=4th' },
-            { name: '五等奖', color: '#FFEAA7', image: 'https://via.placeholder.com/80/FFEAA7/000000?text=5th' },
-            { name: '六等奖', color: '#DDA0DD', image: 'https://via.placeholder.com/80/DDA0DD/FFFFFF?text=6th' },
-            { name: '七等奖', color: '#98D8C8', image: 'https://via.placeholder.com/80/98D8C8/FFFFFF?text=7th' },
-            { name: '八等奖', color: '#F7DC6F', image: 'https://via.placeholder.com/80/F7DC6F/000000?text=8th' }
+            { name: '一等奖 苹果手机', color: '#FF6B6B', image: 'https://img.icons8.com/fluency/96/iphone-x.png' },
+            { name: '二等奖 平衡车',    color: '#4ECDC4', image: 'https://img.icons8.com/fluency/96/electric-scooter.png' },
+            { name: '三等奖 运动耳机',  color: '#45B7D1', image: 'https://img.icons8.com/color/96/headphones.png' },
+            { name: '四等奖 充电套装',  color: '#96CEB4', image: 'https://img.icons8.com/color/96/battery.png' },
+            { name: '五等奖 电脑',      color: '#FFEAA7', image: 'https://img.icons8.com/color/96/imac.png' },
+            { name: '六等奖 会员卡',    color: '#DDA0DD', image: 'https://img.icons8.com/color/96/vip.png' },
+            { name: '七等奖 老年手机',  color: '#98D8C8', image: 'https://img.icons8.com/fluency/96/cell-phone.png' },
+            { name: '八等奖 礼盒一份',  color: '#F7DC6F', image: 'https://img.icons8.com/fluency/96/gift.png' }
         ];
 
         let isSpinning = false;
@@ -342,10 +372,21 @@
                 segment.style.transform = `rotate(${segmentAngle * index}deg)`;
                 segment.style.clipPath = `polygon(50% 50%, 100% 0, 100% 100%)`;
                 segment.style.backgroundColor = prize.color;
-                
-                const span = document.createElement('span');
-                span.textContent = prize.name;
-                segment.appendChild(span);
+
+                const content = document.createElement('div');
+                content.className = 'section-content';
+
+                const img = document.createElement('img');
+                img.className = 'section-img';
+                img.src = prize.image;
+                img.alt = prize.name;
+
+                const label = document.createElement('span');
+                label.textContent = prize.name;
+
+                content.appendChild(img);
+                content.appendChild(label);
+                segment.appendChild(content);
                 wheel.appendChild(segment);
             });
         }
