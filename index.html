@@ -451,7 +451,7 @@ systemctl daemon-reload
 rm -fr /usr/local/s-ui
 rm /usr/bin/s-ui</code></pre>
         <div style="margin:16px 0 10px; color:var(--muted);">搭配S-UI</div>
-        <pre>code>第一步：TLS设置，添加REALITY名称随意，，SNI和握手填域名，端口443，生成公钥私钥，TLS选项勾选UTLS，随便选择一个浏览器，保存
+        <pre><code>第一步：TLS设置，添加REALITY名称随意，，SNI和握手填域名，端口443，生成公钥私钥，TLS选项勾选UTLS，随便选择一个浏览器，保存
 第二步：TLS设置，添加TLS,随便给个名称，生成证书和私钥，勾起允许不安全，TLS选项勾起SNI和ALPN,SNI填写域名，保存
 
 第三步：入站管理，添加，类型VMess，标签随意，端口443，模版选择添加REALITY的名称，保存
