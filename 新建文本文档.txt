@@ -1,0 +1,65 @@
+修改前的代码：<main class="max-w-7xl mx-auto px-4 py-10 relative z-10">
+    <div id="user-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+</main>
+修改后的代码：<main class="max-w-7xl mx-auto px-4 py-10 relative z-10">
+    <div id="user-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6"></div>
+</main>
+修改前的代码：document.getElementById('user-grid').innerHTML = allUsers.map((u, index) => `
+    <div onclick="openModal(${index})" class="user-card bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer relative">
+        <div class="relative h-80 overflow-hidden">
+            <img src="${u.avatar}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+            <div class="absolute bottom-4 left-5 text-white text-shadow-sm">
+                <h3 class="font-bold text-sm">
+                    ${u.name} <span class="text-pink-300 mx-0.5">*</span> ${u.age}岁
+                </h3>
+                <p class="text-[10px] opacity-90 mt-0.5">
+                    ${u.province} . ${u.city} . ${u.district}
+                </p>
+            </div>
+        </div>
+    </div>
+`).join('');
+修改后的代码：document.getElementById('user-grid').innerHTML = allUsers.map((u, index) => `
+    <div onclick="openModal(${index})" class="user-card bg-white rounded-xl md:rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer relative">
+        <div class="relative h-48 md:h-80 overflow-hidden">
+            <img src="${u.avatar}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div class="absolute bottom-2 left-3 md:bottom-4 md:left-5 text-white text-shadow-sm">
+                <h3 class="font-bold text-xs md:text-sm">
+                    ${u.name} <span class="text-pink-300 mx-0.5">*</span> ${u.age}
+                </h3>
+                <p class="text-[8px] md:text-[10px] opacity-90">
+                    ${u.city} · ${u.district}
+                </p>
+            </div>
+        </div>
+    </div>
+`).join('');
+
+修改后<div id="modal" class="hidden fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="bg-white rounded-[2rem] w-full max-w-4xl max-h-[90vh] overflow-y-auto relative shadow-2xl flex flex-col md:flex-row" onclick="event.stopPropagation()">
+    
+    <div class="w-full md:w-1/2 bg-[#1a1a1a] flex items-center justify-center overflow-hidden h-[45vh] md:h-auto">
+    <img id="m-img" src="" class="w-full h-full object-cover">
+    </div>
+
+    <div class="p-6 md:p-8 w-full md:w-1/2 flex flex-col">
+        <div class="flex-grow">
+            <h2 id="m-name" class="text-2xl md:text-3xl font-bold mb-2"></h2>
+            <div id="m-tag" class="text-pink-500 font-bold text-xs md:text-sm mb-4"></div>
+            <p id="m-bio" class="text-slate-500 text-sm leading-relaxed mb-6"></p>
+            
+            <div class="text-xs font-bold text-slate-400 mb-2 uppercase">更多照片</div>
+            <div id="m-album" class="grid grid-cols-4 gap-2 mb-6"></div>
+        </div>
+
+        <a id="m-link" href="#" target="_blank" class="block w-full bg-pink-500 text-white text-center py-4 rounded-2xl font-bold shadow-lg shadow-pink-100 hover:bg-pink-600 transition-colors sticky bottom-0">
+            立即预约
+        </a>
+    </div>
+
+    <button onclick="closeModal()" class="fixed md:absolute top-6 right-6 bg-black/20 backdrop-blur-md rounded-full w-8 h-8 text-white font-bold z-10">✕</button>
+</div>
+
+2改4.把 grid-cols-2 改成 grid-cols-4
