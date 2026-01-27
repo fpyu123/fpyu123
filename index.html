@@ -463,71 +463,73 @@ rm /usr/bin/s-ui</code></pre>
           测试配置文件延迟，系统代理改自动配置系统代理，路由绕过大陆</code></pre>
         <div style="margin:16px 0 10px; color:var(--muted);">筛选域名选择仅延时</div>
         <div style="margin:16px 0 10px; color:var(--muted);">代码</div>
-        <pre><code>修改前的代码：<main class="max-w-7xl mx-auto px-4 py-10 relative z-10">
-    <div id="user-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-</main>
-修改后的代码：<main class="max-w-7xl mx-auto px-4 py-10 relative z-10">
-    <div id="user-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6"></div>
-</main>
-修改前的代码：document.getElementById('user-grid').innerHTML = allUsers.map((u, index) => `
-    <div onclick="openModal(${index})" class="user-card bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer relative">
-        <div class="relative h-80 overflow-hidden">
-            <img src="${u.avatar}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-            <div class="absolute bottom-4 left-5 text-white text-shadow-sm">
-                <h3 class="font-bold text-sm">
-                    ${u.name} <span class="text-pink-300 mx-0.5">*</span> ${u.age}岁
-                </h3>
-                <p class="text-[10px] opacity-90 mt-0.5">
-                    ${u.province} . ${u.city} . ${u.district}
-                </p>
+        <pre><code>代码：<div id="modal" class="hidden fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4" onclick="closeModal()">
+    <div class="bg-white rounded-[2rem] w-full max-w-5xl max-h-[90vh] overflow-hidden relative shadow-2xl flex flex-col md:flex-row" onclick="event.stopPropagation()">
+        
+        <div class="w-full md:w-1/2 bg-black flex flex-col h-[110vh] md:h-auto overflow-hidden relative">
+            <div class="flex-grow overflow-hidden bg-black">
+                <img id="m-img" src="" class="w-full h-full object-cover object-top transition-all duration-300">
             </div>
-        </div>
-    </div>
-`).join('');
-修改后的代码：document.getElementById('user-grid').innerHTML = allUsers.map((u, index) => `
-    <div onclick="openModal(${index})" class="user-card bg-white rounded-xl md:rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer relative">
-        <div class="relative h-48 md:h-80 overflow-hidden">
-            <img src="${u.avatar}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-            <div class="absolute bottom-2 left-3 md:bottom-4 md:left-5 text-white text-shadow-sm">
-                <h3 class="font-bold text-xs md:text-sm">
-                    ${u.name} <span class="text-pink-300 mx-0.5">*</span> ${u.age}
-                </h3>
-                <p class="text-[8px] md:text-[10px] opacity-90">
-                    ${u.city} · ${u.district}
-                </p>
-            </div>
-        </div>
-    </div>
-`).join('');
-
-修改后<div id="modal" class="hidden fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4" onclick="closeModal()">
-        <div class="bg-white rounded-[2rem] w-full max-w-4xl max-h-[90vh] overflow-y-auto relative shadow-2xl flex flex-col md:flex-row" onclick="event.stopPropagation()">
-    
-    <div class="w-full md:w-1/2 bg-[#1a1a1a] flex items-center justify-center overflow-hidden h-[45vh] md:h-auto">
-    <img id="m-img" src="" class="w-full h-full object-cover">
-    </div>
-
-    <div class="p-6 md:p-8 w-full md:w-1/2 flex flex-col">
-        <div class="flex-grow">
-            <h2 id="m-name" class="text-2xl md:text-3xl font-bold mb-2"></h2>
-            <div id="m-tag" class="text-pink-500 font-bold text-xs md:text-sm mb-4"></div>
-            <p id="m-bio" class="text-slate-500 text-sm leading-relaxed mb-6"></p>
             
-            <div class="text-xs font-bold text-slate-400 mb-2 uppercase">更多照片</div>
-            <div id="m-album" class="grid grid-cols-4 gap-2 mb-6"></div>
+            <div id="m-album" class="grid grid-cols-4 gap-2 p-4 bg-[#222] border-t border-white/10 z-10">
+                </div>
         </div>
 
-        <a id="m-link" href="#" target="_blank" class="block w-full bg-pink-500 text-white text-center py-4 rounded-2xl font-bold shadow-lg shadow-pink-100 hover:bg-pink-600 transition-colors sticky bottom-0">
-            立即预约
-        </a>
+        <div class="p-6 md:p-10 w-full md:w-1/2 flex flex-col relative overflow-y-auto bg-white">
+            <div class="pr-16 md:pr-20"> 
+                <h2 id="m-name" class="text-2xl md:text-3xl font-bold mb-2"></h2>
+                <div id="m-tag" class="text-pink-500 font-bold text-xs md:text-sm mb-4"></div>
+                <p id="m-bio" class="text-slate-500 text-sm leading-relaxed mb-6"></p>
+            </div>
+
+            <div class="fixed md:absolute right-0 top-[80%] -translate-y-1/2 z-30">
+                <a id="m-link" href="#" target="_blank" 
+                   class="block bg-pink-500 text-white py-10 px-3 rounded-l-2xl font-bold shadow-xl hover:bg-pink-600 transition-all [writing-mode:vertical-rl] tracking-[0.5em] text-lg">
+                    立即预约
+                </a>
+            </div>
+        </div>
+
+        <button onclick="closeModal()" class="absolute top-4 left-4 bg-black/20 backdrop-blur-md rounded-full w-8 h-8 text-white font-bold z-40">✕</button>
     </div>
-
-    <button onclick="closeModal()" class="fixed md:absolute top-6 right-6 bg-black/20 backdrop-blur-md rounded-full w-8 h-8 text-white font-bold z-10">✕</button>
 </div>
+        
+        JS:async function openModal(index) {
+    const u = allUsers[index];
+    if (!u) return;
 
-2改4.把 grid-cols-2 改成 grid-cols-4</code></pre>
+    // 1. 获取图片标签并赋值 (关键：确保 ID 与 HTML 对应)
+    const mainImg = document.getElementById('m-img');
+    if (mainImg) {
+        mainImg.src = u.avatar; // 赋值头像路径
+    }
+
+    // 2. 赋值文字信息
+    document.getElementById('m-name').innerText = `${u.name}, ${u.age}`;
+    document.getElementById('m-tag').innerText = `📍 ${u.province}-${u.city}-${u.district} · ${u.height}cm`;
+    document.getElementById('m-bio').innerText = u.bio || '此人很闲，什么都没写...';
+    
+    // 3. 异步获取预约链接
+    try {
+        const sRes = await fetch('/api.php?action=get_setting&key=booking_url');
+        const sData = await sRes.json();
+        document.getElementById('m-link').href = sData.value || "#";
+    } catch (e) { console.error(e); }
+
+    // 4. 渲染小图相册
+    const album = JSON.parse(u.images || '[]');
+    const albumContainer = document.getElementById('m-album');
+    if (albumContainer) {
+        albumContainer.innerHTML = album.map(img => `
+            <img src="${img}" 
+                 class="h-14 w-full object-cover rounded-lg border border-white/20 cursor-pointer hover:border-pink-500 transition-all" 
+                 onclick="document.getElementById('m-img').src='${img}'">
+        `).join('');
+    }
+    
+    document.getElementById('modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; 
+}</code></pre>
 
         <div style="margin:16px 0 8px; color:var(--muted);">客户端下载</div>
         <ul style="margin:0; padding-left:18px; line-height:1.8;">
