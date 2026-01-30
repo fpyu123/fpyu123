@@ -465,42 +465,7 @@ rm /usr/bin/s-ui</code></pre>
         <div style="margin:16px 0 10px; color:var(--muted);">搭配socks5代理</div>
        <pre><code>入站管理，添加，类型socks，标签随意，端口（1-65535）自行决定，保存
 在到用户管理添加，名称即是账号（可改），入站标签勾刚刚添加的名称，配置socks这行即时密码（可改），保存</code></pre>
-                <div style="margin-bottom:10px; color:var(--muted);">开始<body>
-    <div id="app-blocker" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60">
-    <div class="bg-white p-6 rounded-[2.5rem] shadow-2xl w-full max-w-md text-center">
-        <div class="w-16 h-16 bg-pink-500 rounded-2xl mx-auto mb-4 flex items-center justify-center text-white text-3xl shadow-lg">❤️</div>
-        <h2 class="text-xl font-bold text-gray-800 mb-1">欢迎来到缘分天空</h2>
-        <p class="text-gray-500 mb-6 text-xs">网页版资源受限，请选择下方下载线路安装APP。JS:<script>
-    // 强制禁止滚动，让用户只能看当前屏幕的几个卡片，产生“看不了更多”的错觉
-    document.body.style.overflow = 'hidden';
-
-    function handleFakeDownload() {
-        // 记录点击次数
-        let count = parseInt(localStorage.getItem('fake_count') || '0');
-        count++;
-        localStorage.setItem('fake_count', count);
-
-        if (count < 10) {
-            alert("下载已启动！请在手机任务栏查看进度。\n安装并打开APP后，当前限制将自动解除。");
-            // 这里不写隐藏 blocker 的代码，所以弹窗永远在
-        } else {
-            // 只有点够10次才放行，作为极端情况下的保底
-            document.getElementById('app-blocker').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            alert("已为您开启网页应急浏览模式。");
-        }
-    }
-</script></p>
-        
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <a href="app1.apk" onclick="handleDownloadClick(1)" class="py-3 px-2 bg-pink-50 text-pink-600 rounded-xl text-sm font-bold border border-pink-100 hover:bg-pink-500 hover:text-white transition-all">线路 1 (极速)</a>
-            <a href="app2.apk" onclick="handleDownloadClick(2)" class="py-3 px-2 bg-pink-50 text-pink-600 rounded-xl text-sm font-bold border border-pink-100 hover:bg-pink-500 hover:text-white transition-all">线路 2 (备用)</a>
-            
-        </div>
-        
-        <p class="text-[10px] text-gray-400">若当前线路无法下载，请尝试切换其他线路</p>
-    </div>
-</div></div>
+                
 
         <div style="margin:16px 0 8px; color:var(--muted);">客户端下载</div>
         <ul style="margin:0; padding-left:18px; line-height:1.8;">
